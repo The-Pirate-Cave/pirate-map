@@ -35,9 +35,7 @@ const Home: NextPage = () => {
     if (ref.current && position) {
       createMap(ref.current, { longitude, latitude }).then((map: any) => {
         map.addControl(new mapboxgl.NavigationControl());
-        const marker1 = new mapboxgl.Marker()
-          .setLngLat([longitude, latitude])
-          .addTo(map);
+
         map.addControl(
           new mapboxgl.GeolocateControl({
             positionOptions: {
@@ -102,7 +100,6 @@ const Home: NextPage = () => {
             <article className="">
               <div className="mb-6">
                 <>
-                  <hr className={`my-5 border-gray-600`} />
                   <div className="mb-2 flex items-center justify-between">
                     <h4 className={'inline font-bold'}>Live location</h4>
                     <Switch
@@ -119,7 +116,7 @@ const Home: NextPage = () => {
                   </div>
                 </>
                 {geoLocations.map((geoLocation, index) => (
-                  <div key={index} className={'my-1 flex align-middle'}>
+                  <div key={index} className={'my-2 flex align-middle'}>
                     <svg
                       className={'mr-2 w-7 stroke-amber-50'}
                       version="1.1"
