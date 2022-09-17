@@ -1,5 +1,6 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
+import { useRouter } from 'next/router';
 import usePirateContract from 'src/contracts/usePirateContract';
 import { bnum, noOp } from 'src/lib/helpers';
 import { useAccount, useBalance } from 'wagmi';
@@ -7,6 +8,7 @@ import { useAccount, useBalance } from 'wagmi';
 import { generateChest, generatePrivateKey } from '../contracts/helpers';
 
 function Deposit({ geoLocations, amount, ...restProps }) {
+  const router = useRouter();
   const privateKey = generatePrivateKey(geoLocations);
   const chest = generateChest(geoLocations);
   console.log(chest, 'chest');
@@ -75,10 +77,15 @@ function Deposit({ geoLocations, amount, ...restProps }) {
   return (
     <button
       onClick={deposit}
-      className="w-[150px] rounded-xl border border-indigo-500 bg-indigo-600 p-2 px-4 text-white"
+      className="flex rounded-xl border border-indigo-500 bg-indigo-600 p-2 px-4 align-middle font-bold text-white"
       {...restProps}
     >
-      Deposit
+      <img
+        src={`${router.basePath}/assets/icons/pirate.png`}
+        className={'mr-3 w-7'}
+        alt=""
+      />
+      Bury a treasure
     </button>
   );
 }

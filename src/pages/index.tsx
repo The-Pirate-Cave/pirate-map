@@ -63,13 +63,14 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="z-10 py-5 px-4 md:w-1/2 md:px-10">
-          <div className="mb-10">
+          <div className="">
             <ConnectButton />
           </div>
           <article className="mb-20 flex">
             <article className="">
               <div className="mb-6">
                 <>
+                  <hr className={`my-5 border-gray-600`} />
                   <div className="mb-2 flex align-middle">
                     <h4 className={'inline font-bold'}>Live Watching: </h4>
                     <Switch
@@ -92,7 +93,7 @@ const Home: NextPage = () => {
                     <button
                       disabled={!position}
                       className={
-                        'flex rounded-xl border-2 border-indigo-500 bg-gradient-to-b from-sky-500 to-indigo-500 p-2 px-4 align-middle text-white'
+                        'flex rounded-xl border-2 border-indigo-500 bg-indigo-600 p-2 px-4 align-middle text-white'
                       }
                       onClick={() => {
                         setGeoLocations([
@@ -102,22 +103,31 @@ const Home: NextPage = () => {
                       }}
                     >
                       <img
-                        src={`${router.basePath}/assets/icons/ship.png`}
+                        src={`${router.basePath}/assets/icons/map-pin.png`}
                         className={'mr-3 inline w-6'}
                         alt=""
                       />
-                      Save coords for deposit
+                      PIN A LOCATION
                     </button>
                   </div>
-                  <hr className={`my-5`} />
+                  <hr className={`my-5 border-gray-600`} />
                 </>
                 {geoLocations.map((geoLocation, index) => (
                   <div key={index} className={'my-1 flex align-middle'}>
+                    <svg
+                      className={'mr-2 w-7 stroke-amber-50'}
+                      version="1.1"
+                      viewBox="0 0 91 91"
+                    >
+                      <g>
+                        <path d="M34.7,73.3V48.4l34.6-10.1c0.7-0.2,1.2-0.8,1.2-1.5s-0.4-1.4-1-1.7L33.7,20.5c-0.5-0.2-1.1-0.2-1.6,0.2   c-0.5,0.3-0.7,0.8-0.7,1.4v51.2H34.7z" />
+                      </g>
+                    </svg>
                     <input
                       disabled={true}
                       onChange={() => {}}
                       className={
-                        'w-[220px] rounded-xl border-2 border-gray-400 bg-gray-100 p-2 text-black disabled:bg-gray-300'
+                        'w-[220px] rounded-xl border-2 border-gray-200 p-2 text-black disabled:bg-gray-300'
                       }
                       type="text"
                       value={[geoLocation.latitude, geoLocation.longitude].join(
@@ -133,14 +143,14 @@ const Home: NextPage = () => {
                         ]);
                       }}
                       className={
-                        'bg-gray mx-2 flex rounded-xl border-2 bg-red-600 py-2 px-3 align-middle text-white'
+                        'bg-gray mx-2 flex rounded-xl bg-red-600 py-2 px-3 align-middle text-white'
                       }
                     >
                       Remove
                       <img
                         src={`${router.basePath}/assets/icons/remove.webp`}
                         alt=""
-                        className="ml-3 w-5"
+                        className="ml-3 mt-1 w-5"
                       />
                     </button>
                   </div>
@@ -148,7 +158,7 @@ const Home: NextPage = () => {
               </div>
               <div className="mb-5">
                 <label>
-                  <b>Amount to deposit (ETH):</b>
+                  <b>Amount (ETH):</b>
                   <div className={'mt-5'}>
                     <input
                       className={'border-2 p-2'}
@@ -160,12 +170,14 @@ const Home: NextPage = () => {
                   </div>
                 </label>
               </div>
-              <div className="mb-5">
-                <Deposit amount={amount} geoLocations={geoLocations} />
-              </div>
-              <div className="mb-5">
-                <Withdraw amount={amount} geoLocations={geoLocations} />
-              </div>
+              <article className="flex">
+                <div className="mb-5 mr-5">
+                  <Deposit amount={amount} geoLocations={geoLocations} />
+                </div>
+                <div className="mb-5">
+                  <Withdraw amount={amount} geoLocations={geoLocations} />
+                </div>
+              </article>
             </article>
           </article>
         </div>
