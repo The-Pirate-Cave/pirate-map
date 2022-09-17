@@ -4,6 +4,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { AiTwotonePushpin } from 'react-icons/ai';
 import Switch from 'react-ios-switch';
 import { useGeo, useGeoWatch } from 'use-geo';
 import { useAccount, useBalance } from 'wagmi';
@@ -28,22 +29,15 @@ const Home: NextPage = () => {
     addressOrName: address,
   });
 
+  const roundDown = (n: number) => n.toFixed(3);
+
   useEffect(() => {
     if (ref.current && position) {
       createMap(ref.current, { longitude, latitude }).then((map: any) => {
         map.addControl(new mapboxgl.NavigationControl());
-
-        // const marker1 = new mapboxgl.Marker()
-        //   .setLngLat([longitude, latitude])
-        //   .addTo(map);
-        //
-        // map.addControl(
-        //   new mapboxgl.AttributionControl({
-        //     customAttribution: 'Map design by me',
-        //   })
-        // );
-
-        // Add geolocate control to the map.
+        const marker1 = new mapboxgl.Marker()
+          .setLngLat([longitude, latitude])
+          .addTo(map);
         map.addControl(
           new mapboxgl.GeolocateControl({
             positionOptions: {
@@ -79,7 +73,7 @@ const Home: NextPage = () => {
       </Head>
 
       <section className="h-screen md:flex">
-        <div className="h-64 md:h-full md:w-1/2">
+        <div className="h-64 grow md:h-full">
           <div
             ref={ref}
             className="h-full w-full p-2 text-center"
@@ -88,7 +82,7 @@ const Home: NextPage = () => {
             Loading...
           </div>
         </div>
-        <div className="z-10 py-5 px-4 md:w-1/2 md:px-10">
+        <div className="z-10 py-5 px-4 md:px-10">
           <div className="">
             <ConnectButton />
           </div>
@@ -107,9 +101,10 @@ const Home: NextPage = () => {
           <article className="mb-20">
             <article className="">
               <div className="mb-6">
-                <article className={'mb-5'}>
-                  <div className="mb-2 flex align-middle">
-                    <h4 className={'inline font-bold'}>Live Watching: </h4>
+                <>
+                  <hr className={`my-5 border-gray-600`} />
+                  <div className="mb-2 flex items-center justify-between">
+                    <h4 className={'inline font-bold'}>Live location</h4>
                     <Switch
                       className={'mx-2'}
                       checked={watching}
@@ -122,47 +117,7 @@ const Home: NextPage = () => {
                       }}
                     />
                   </div>
-                  <div className={'mb-5'}>
-                    {position && (
-                      <>
-                        <span>
-                          <b className={'text-yellow-600'}>Latitude:</b>{' '}
-                          {latitude}
-                        </span>{' '}
-                        <span>
-                          <b className={'text-yellow-600'}>Longitude:</b>{' '}
-                          {longitude}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  <div>
-                    <button
-                      disabled={!position}
-                      className={
-                        'flex rounded-xl border-2 border-indigo-500 bg-indigo-600 p-2 px-4 align-middle capitalize text-white'
-                      }
-                      onClick={() => {
-                        setGeoLocations([
-                          ...geoLocations,
-                          {
-                            longitude: bnum(longitude).toFixed(4),
-                            latitude: bnum(latitude).toFixed(4),
-                          },
-                        ]);
-                      }}
-                    >
-                      <img
-                        src={`${router.basePath}/assets/icons/map-pin.png`}
-                        className={'mr-3 inline w-6'}
-                        alt=""
-                      />
-                      PIN your location
-                    </button>
-                  </div>
-                </article>
-                <h3 className={'text-xl font-bold'}>Pins</h3>
-                {geoLocations.length === 0 && <p>No PINs were saved</p>}
+                </>
                 {geoLocations.map((geoLocation, index) => (
                   <div key={index} className={'my-1 flex align-middle'}>
                     <svg
@@ -205,6 +160,31 @@ const Home: NextPage = () => {
                     </button>
                   </div>
                 ))}
+                <div>
+                  <button
+                    disabled={!position}
+                    className={
+                      'flex w-full items-center rounded-xl border-2 border-indigo-500 bg-indigo-600 p-2 px-4 font-bold text-white'
+                    }
+                    onClick={() => {
+                      setGeoLocations([
+                        ...geoLocations,
+                        {
+                          longitude: bnum(longitude).toFixed(3),
+                          latitude: bnum(latitude).toFixed(3),
+                        },
+                      ]);
+                    }}
+                  >
+                    <AiTwotonePushpin className="text-xl" />
+                    <div className="flex grow items-center justify-center">
+                      PIN MY LOCATION
+                    </div>
+                  </button>
+                </div>
+                {geoLocations.length === 0 && (
+                  <p className="py-2 text-red-500">No location stored</p>
+                )}
               </div>
               <div className="mb-5">
                 <hr className={`my-5 border-gray-600`} />
@@ -212,7 +192,8 @@ const Home: NextPage = () => {
                   <b>Amount (ETH):</b>
                   <div className={'mt-5'}>
                     <input
-                      className={'border-2 p-2 text-black'}
+                      placeholder="0.00"
+                      className="text-whit w-full border-b-2 bg-transparent p-2 outline-none focus:border-lime-500"
                       type="number"
                       onChange={(event) => {
                         setAmount(event.target.value);
@@ -233,12 +214,6 @@ const Home: NextPage = () => {
           </article>
         </div>
       </section>
-
-      {/* <footer> */}
-      {/*  <a href="https://rainbow.me" target="_blank" rel="noopener noreferrer"> */}
-      {/*    Made with ❤️ by your frens at 🌈 */}
-      {/*  </a> */}
-      {/* </footer> */}
     </>
   );
 };
