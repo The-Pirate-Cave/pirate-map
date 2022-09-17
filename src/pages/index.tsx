@@ -6,8 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { AiTwotonePushpin } from 'react-icons/ai';
 import Switch from 'react-ios-switch';
-import { useGeo, useGeoWatch } from 'use-geo';
-import { useAccount, useBalance } from 'wagmi';
+import { useGeoWatch } from 'use-geo';
 
 import Deposit from '@/components/Deposit';
 import Withdraw from '@/components/Withdraw';
@@ -23,13 +22,7 @@ const Home: NextPage = () => {
   const [geoLocations, setGeoLocations] = useState([]);
   const [amount, setAmount] = useState(0);
   const { longitude, latitude } = position?.coords || {};
-  const { address } = useAccount();
   const router = useRouter();
-  const { data: balance } = useBalance({
-    addressOrName: address,
-  });
-
-  const roundDown = (n: number) => n.toFixed(3);
 
   useEffect(() => {
     if (ref.current && position) {
