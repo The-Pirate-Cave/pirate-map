@@ -39,11 +39,19 @@ const Home: NextPage = () => {
           .setLngLat([longitude, latitude])
           .addTo(map);
         map.addControl(
-          new mapboxgl.AttributionControl({
-            customAttribution: 'Map design by me',
+          new mapboxgl.GeolocateControl({
+            positionOptions: {
+              enableHighAccuracy: true,
+            },
+            showUserLocation: true,
+            // When active the map will receive updates to the device's location as it changes.
+            trackUserLocation: true,
+            // Draw an arrow next to the location dot to indicate which direction the device is heading.
+            showUserHeading: true,
           })
         );
       });
+      ref.current = null;
     }
   }, [ref, position]);
 
@@ -78,7 +86,19 @@ const Home: NextPage = () => {
           <div className="">
             <ConnectButton />
           </div>
-          <article className="mb-20 flex">
+          <div className="mt-5 grid place-items-center">
+            <div className={'mx-auto block w-3/12 md:mx-10'}>
+              <img
+                src={`${router.basePath}/assets/icons/logotype.svg`}
+                alt=""
+              />
+            </div>
+            <h2 className={'mx-3 text-2xl md:text-3xl'}>
+              Hide your crypto assets in a secret location
+            </h2>
+            <hr className={`my-5 w-full border-gray-600`} />
+          </div>
+          <article className="mb-20">
             <article className="">
               <div className="mb-6">
                 <>
@@ -89,7 +109,11 @@ const Home: NextPage = () => {
                       className={'mx-2'}
                       checked={watching}
                       onChange={() => {
-                        watching ? unwatch() : watch();
+                        if (watching) {
+                          unwatch();
+                        } else {
+                          watch();
+                        }
                       }}
                     />
                   </div>
@@ -163,6 +187,7 @@ const Home: NextPage = () => {
                 )}
               </div>
               <div className="mb-5">
+                <hr className={`my-5 border-gray-600`} />
                 <label>
                   <b>Amount (ETH):</b>
                   <div className={'mt-5'}>

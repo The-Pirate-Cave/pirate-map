@@ -23,6 +23,14 @@ export function generateChest(geoLocations) {
   return keccak256(utils.toUtf8Bytes(joinedCoords));
 }
 
+export function generateChestUnhashed(geoLocations) {
+  const joinedCoords = geoLocations
+    .map(({ longitude, latitude }) => [longitude, latitude].join(''))
+    .join('');
+
+  return utils.toUtf8Bytes(joinedCoords);
+}
+
 export const runConfettiParty = () => {
   const randomInRange = (min, max) => {
     return Math.random() * (max - min) + min;
