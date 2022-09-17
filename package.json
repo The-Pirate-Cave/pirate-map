@@ -1,5 +1,6 @@
 {
   "name": "pirate-map",
+  "homepage": "https://the-pirate-cave.github.io/pirate-map",
   "private": true,
   "version": "0.1.0",
   "scripts": {
