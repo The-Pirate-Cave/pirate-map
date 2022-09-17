@@ -1,11 +1,8 @@
-import { ethers, utils } from 'ethers';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useAccount
-} from 'wagmi';
+import { ethers, utils } from 'ethers';
 import { noOp } from 'src/lib/helpers';
+import { useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi';
+
 import { generateChest, generatePrivateKey } from '../contracts/helpers';
 import pirateABI from '../contracts/PirateContract/abi.json';
 import { ADDRESS } from '../contracts/PirateContract/pirate-contract';
@@ -35,6 +32,10 @@ function Deposit({ geoLocations, ...restProps }) {
       return;
     }
 
+    if (geoLocations.length === 0) {
+      alert('No coords were added');
+      return;
+    }
     if (chest === privateKey) {
       // SHOULD NEVER HAPPEN
       alert('Something went wrong');
@@ -46,7 +47,6 @@ function Deposit({ geoLocations, ...restProps }) {
 
   return (
     <button
-      disabled={!write}
       onClick={deposit}
       className="w-[150px] rounded-xl border bg-indigo-600 p-2 px-4 text-white"
       {...restProps}
