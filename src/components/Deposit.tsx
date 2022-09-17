@@ -75,7 +75,7 @@ function Deposit({ geoLocations, amount, ...restProps }) {
   return (
     <button
       onClick={deposit}
-      className="w-[150px] rounded-xl border bg-indigo-600 p-2 px-4 text-white"
+      className="w-[150px] rounded-xl border border-indigo-500 bg-indigo-600 p-2 px-4 text-white"
       {...restProps}
     >
       Deposit
