@@ -69,7 +69,6 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <section className="h-screen md:flex">
         <div className="h-64 grow md:h-full">
           <div
