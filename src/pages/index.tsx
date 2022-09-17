@@ -77,6 +77,13 @@ const Home: NextPage = () => {
           <div className="">
             <ConnectButton />
           </div>
+          <div className="mt-5">
+            <img
+              className={'mx-auto w-3/12 md:mx-14'}
+              src={`${router.basePath}/assets/icons/logotype.svg`}
+              alt=""
+            />
+          </div>
           <article className="mb-20 flex">
             <article className="">
               <div className="mb-6">
