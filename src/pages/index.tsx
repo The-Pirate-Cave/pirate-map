@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import mapboxgl from 'mapbox-gl';
 import type { NextPage } from 'next';
