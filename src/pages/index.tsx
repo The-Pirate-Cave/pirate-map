@@ -33,16 +33,31 @@ const Home: NextPage = () => {
       createMap(ref.current, { longitude, latitude }).then((map: any) => {
         map.addControl(new mapboxgl.NavigationControl());
 
-        const marker1 = new mapboxgl.Marker()
-          .setLngLat([longitude, latitude])
-          .addTo(map);
+        // const marker1 = new mapboxgl.Marker()
+        //   .setLngLat([longitude, latitude])
+        //   .addTo(map);
+        //
+        // map.addControl(
+        //   new mapboxgl.AttributionControl({
+        //     customAttribution: 'Map design by me',
+        //   })
+        // );
 
+        // Add geolocate control to the map.
         map.addControl(
-          new mapboxgl.AttributionControl({
-            customAttribution: 'Map design by me',
+          new mapboxgl.GeolocateControl({
+            positionOptions: {
+              enableHighAccuracy: true,
+            },
+            showUserLocation: true,
+            // When active the map will receive updates to the device's location as it changes.
+            trackUserLocation: true,
+            // Draw an arrow next to the location dot to indicate which direction the device is heading.
+            showUserHeading: true,
           })
         );
       });
+      ref.current = null;
     }
   }, [ref, position]);
 
