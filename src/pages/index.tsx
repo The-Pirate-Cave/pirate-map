@@ -17,6 +17,7 @@ const Home: NextPage = () => {
   const { createMap } = useMap();
   const ref = useRef(null);
   const [geoLocations, setGeoLocations] = useState([]);
+  const [amount, setAmount] = useState(0);
   const { longitude, latitude } = position?.coords || {};
   const router = useRouter();
 
@@ -129,7 +130,21 @@ const Home: NextPage = () => {
                 ))}
               </div>
               <div className="mb-5">
-                <Deposit geoLocations={geoLocations} />
+                <label>
+                  Amout to deposit (ETH):
+                  <div>
+                    <input
+                      className={'border-2 p-2'}
+                      type="number"
+                      onChange={(event) => {
+                        setAmount(event.target.value);
+                      }}
+                    />
+                  </div>
+                </label>
+              </div>
+              <div className="mb-5">
+                <Deposit amount={amount} geoLocations={geoLocations} />
               </div>
             </article>
           </article>
