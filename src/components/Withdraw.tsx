@@ -3,7 +3,8 @@ import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import {
-  generateChest, generateChestUnhashed,
+  generateChest,
+  generateChestUnhashed,
   generatePrivateKey,
   runConfettiParty,
 } from 'src/contracts/helpers';
@@ -20,14 +21,12 @@ function Withdraw({ geoLocations, amount }) {
     addressOrName: address,
   });
   const router = useRouter();
-  let messageHashBytes = generateChestUnhashed(geoLocations);
+  const messageHashBytes = generateChestUnhashed(geoLocations);
   const signedTreasure = pirateSigner.signMessage(messageHashBytes);
   pirateSigner.signMessage(messageHashBytes).then((sign) => {
-    console.log(sign, "signature");
-    let addr = ethers.utils.verifyMessage(messageHashBytes, sign);
-    console.log(addr, "address");
+    const addr = ethers.utils.verifyMessage(messageHashBytes, sign);
   });
-  console.log(signedTreasure, "treasure");
+
   const { openConnectModal = noOp } = useConnectModal();
   const { data, isLoading, isSuccess, writeAsync } = usePirateContract(
     'diggChest',
