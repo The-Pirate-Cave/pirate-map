@@ -16,7 +16,7 @@ jobs:
       - name: build 🔧
         run: |
           yarn build
-          yarn start
+          yarn export
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
