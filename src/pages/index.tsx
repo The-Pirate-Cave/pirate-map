@@ -127,8 +127,8 @@ const Home: NextPage = () => {
                         setGeoLocations([
                           ...geoLocations,
                           {
-                            longitude: bnum(longitude).toFixed(3),
-                            latitude: bnum(latitude).toFixed(3),
+                            longitude: bnum(longitude).toFixed(4),
+                            latitude: bnum(latitude).toFixed(4),
                           },
                         ]);
                       }}
