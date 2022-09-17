@@ -4,7 +4,9 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import Switch from 'react-ios-switch';
 import { useGeo, useGeoWatch } from 'use-geo';
+import { useAccount, useBalance } from 'wagmi';
 
 import Deposit from '@/components/Deposit';
 import Withdraw from '@/components/Withdraw';
@@ -19,7 +21,11 @@ const Home: NextPage = () => {
   const [geoLocations, setGeoLocations] = useState([]);
   const [amount, setAmount] = useState(0);
   const { longitude, latitude } = position?.coords || {};
+  const { address } = useAccount();
   const router = useRouter();
+  const { data: balance } = useBalance({
+    addressOrName: address,
+  });
 
   useEffect(() => {
     if (ref.current && position) {
@@ -50,27 +56,30 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="flex h-screen">
-        <div className="h-full w-1/2">
+      <section className="h-screen md:flex">
+        <div className="h-64 md:h-full md:w-1/2">
           <div ref={ref} className="h-full w-full" id="map-render">
             Loading...
           </div>
         </div>
-        <div className="z-10 w-1/2 p-20">
-          <div className="mb-20">
+        <div className="z-10 py-5 px-4 md:w-1/2 md:px-10">
+          <div className="mb-10">
             <ConnectButton />
           </div>
           <article className="mb-20 flex">
             <article className="">
-              <div className="mb-5">
+              <div className="mb-6">
                 <>
-                  <span>Live Watching: </span>
-                  <button
-                    onClick={watching ? unwatch : watch}
-                    className={'border-1 mx-2 rounded-xl bg-gray-300 p-2 px-4'}
-                  >
-                    {watching ? 'stop' : 'start'}
-                  </button>
+                  <div className="mb-2 flex align-middle">
+                    <h4 className={'inline font-bold'}>Live Watching: </h4>
+                    <Switch
+                      className={'mx-2'}
+                      checked={watching}
+                      onChange={() => {
+                        watching ? unwatch() : watch();
+                      }}
+                    />
+                  </div>
                   <div className={'mb-5'}>
                     <span>
                       <b>latitude:</b> {latitude}
@@ -82,7 +91,9 @@ const Home: NextPage = () => {
                   <div>
                     <button
                       disabled={!position}
-                      className={'rounded-xl bg-black p-2 px-4 text-white'}
+                      className={
+                        'flex rounded-xl border-2 border-indigo-500 bg-gradient-to-b from-sky-500 to-indigo-500 p-2 px-4 align-middle text-white'
+                      }
                       onClick={() => {
                         setGeoLocations([
                           ...geoLocations,
@@ -90,17 +101,23 @@ const Home: NextPage = () => {
                         ]);
                       }}
                     >
-                      + Save coords for deposit
+                      <img
+                        src={`${router.basePath}/assets/icons/ship.png`}
+                        className={'mr-3 inline w-6'}
+                        alt=""
+                      />
+                      Save coords for deposit
                     </button>
                   </div>
                   <hr className={`my-5`} />
                 </>
                 {geoLocations.map((geoLocation, index) => (
-                  <div key={index} className={'my-1'}>
+                  <div key={index} className={'my-1 flex align-middle'}>
                     <input
+                      disabled={true}
                       onChange={() => {}}
                       className={
-                        'mr-4 w-[240px] rounded-xl border-2 border-gray-400 bg-gray-100 p-2'
+                        'w-[220px] rounded-xl border-2 border-gray-400 bg-gray-100 p-2 text-black disabled:bg-gray-300'
                       }
                       type="text"
                       value={[geoLocation.latitude, geoLocation.longitude].join(
@@ -116,7 +133,7 @@ const Home: NextPage = () => {
                         ]);
                       }}
                       className={
-                        'bg-gray inline-flex justify-items-center rounded-xl border-2 bg-red-500 py-2 px-3 align-middle text-white'
+                        'bg-gray mx-2 flex rounded-xl border-2 bg-red-600 py-2 px-3 align-middle text-white'
                       }
                     >
                       Remove
@@ -131,8 +148,8 @@ const Home: NextPage = () => {
               </div>
               <div className="mb-5">
                 <label>
-                  Amout to deposit (ETH):
-                  <div>
+                  <b>Amount to deposit (ETH):</b>
+                  <div className={'mt-5'}>
                     <input
                       className={'border-2 p-2'}
                       type="number"
