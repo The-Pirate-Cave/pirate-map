@@ -70,8 +70,8 @@ function Deposit({ geoLocations, amount, ...restProps }) {
       const tx = await writeAsync?.();
       await tx?.wait();
       toast.success('Well done, pirate!');
-    } catch (_) {
-      //
+    } catch (error) {
+      toast.error('User rejected a transaction or something went wrong');
     }
   }
 

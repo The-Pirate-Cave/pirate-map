@@ -1,3 +1,4 @@
+import confetti from 'canvas-confetti';
 import { utils } from 'ethers';
 import { keccak256 } from 'ethers/lib/utils';
 
@@ -21,3 +22,15 @@ export function generateChest(geoLocations) {
 
   return keccak256(utils.toUtf8Bytes(joinedCoords));
 }
+
+export const runConfettiParty = () => {
+  const randomInRange = (min, max) => {
+    return Math.random() * (max - min) + min;
+  };
+  confetti({
+    angle: randomInRange(55, 125),
+    spread: randomInRange(50, 70),
+    particleCount: randomInRange(50, 100),
+    origin: { y: 0.6 },
+  });
+};

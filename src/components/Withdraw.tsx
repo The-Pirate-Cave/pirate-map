@@ -1,7 +1,12 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
-import { generateChest, generatePrivateKey } from 'src/contracts/helpers';
+import toast from 'react-hot-toast';
+import {
+  generateChest,
+  generatePrivateKey,
+  runConfettiParty,
+} from 'src/contracts/helpers';
 import usePirateContract from 'src/contracts/usePirateContract';
 import { noOp } from 'src/lib/helpers';
 import { useAccount, useBalance, useSignMessage } from 'wagmi';
@@ -38,27 +43,27 @@ function Withdraw({ geoLocations, amount }) {
     }
 
     if (geoLocations.length === 0) {
-      alert('No coords were added');
+      toast.error('No PINs were added');
       return;
     }
 
     if (!amount) {
-      alert('How much treasure you want to dig out? Enter amount!');
+      toast.error('How much treasure you want to dig out? Enter amount!');
       return;
     }
 
     if (chest === privateKey) {
       // SHOULD NEVER HAPPEN
-      alert('Something went wrong');
+      toast.error('Something went wrong');
       return;
     }
 
     try {
       const tx = await writeAsync?.();
       await tx?.wait();
-      console.log('DONE!', tx);
-    } catch (_) {
-      //
+      runConfettiParty();
+    } catch (error) {
+      toast.error('User rejected a transaction or something went wrong');
     }
   }
   return (
