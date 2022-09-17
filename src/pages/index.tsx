@@ -164,7 +164,7 @@ const Home: NextPage = () => {
                   <button
                     disabled={!position}
                     className={
-                      'flex w-full items-center rounded-xl border-2 border-indigo-500 bg-indigo-600 p-2 px-4 font-bold text-white'
+                      'mt-2 flex w-full items-center rounded-xl border-2 border-indigo-500 bg-indigo-600 p-2 px-4 font-bold text-white'
                     }
                     onClick={() => {
                       setGeoLocations([

@@ -1,16 +1,13 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import usePirateContract from 'src/contracts/usePirateContract';
 import { bnum, noOp } from 'src/lib/helpers';
-import { useAccount, useBalance } from 'wagmi';
+import { useAccount, useBalance, useWaitForTransaction } from 'wagmi';
 
-import {
-  generateChest,
-  generatePrivateKey,
-  runConfettiParty,
-} from '../contracts/helpers';
+import { generateChest, generatePrivateKey } from '../contracts/helpers';
 
 function Deposit({ geoLocations, amount, ...restProps }) {
   const router = useRouter();
@@ -22,12 +19,16 @@ function Deposit({ geoLocations, amount, ...restProps }) {
     addressOrName: address,
   });
   const { openConnectModal = noOp } = useConnectModal();
-  const { writeAsync } = usePirateContract('burryChest', {
+  const { data, writeAsync } = usePirateContract('burryChest', {
     args: [chest, pirateSigner.address],
     overrides: {
       from: address,
       value: ethers.utils.parseEther(`${amount || 0}`).toString(),
     },
+  });
+
+  const { status, isLoading } = useWaitForTransaction({
+    hash: data?.hash,
   });
 
   async function deposit() {
@@ -66,7 +67,6 @@ function Deposit({ geoLocations, amount, ...restProps }) {
     try {
       const tx = await writeAsync?.();
       await tx?.wait();
-      runConfettiParty();
     } catch (error) {
       toast.error('User rejected a transaction or something went wrong');
     }
@@ -74,6 +74,7 @@ function Deposit({ geoLocations, amount, ...restProps }) {
 
   return (
     <button
+      disabled={isLoading}
       onClick={deposit}
       className="flex whitespace-nowrap rounded-xl bg-indigo-600 py-3 px-4 align-middle font-bold text-white"
       {...restProps}

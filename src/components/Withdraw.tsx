@@ -1,6 +1,7 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import {
   generateChest,
@@ -10,7 +11,12 @@ import {
 } from 'src/contracts/helpers';
 import usePirateContract from 'src/contracts/usePirateContract';
 import { noOp } from 'src/lib/helpers';
-import { useAccount, useBalance, useSignMessage } from 'wagmi';
+import {
+  useAccount,
+  useBalance,
+  useSignMessage,
+  useWaitForTransaction,
+} from 'wagmi';
 
 function Withdraw({ geoLocations, amount }) {
   const privateKey = generatePrivateKey(geoLocations);
@@ -28,19 +34,25 @@ function Withdraw({ geoLocations, amount }) {
   });
 
   const { openConnectModal = noOp } = useConnectModal();
-  const { data, isLoading, isSuccess, writeAsync } = usePirateContract(
-    'diggChest',
-    {
-      args: [
-        chest,
-        ethers.utils.parseEther(`${amount || 0}`).toString(),
-        signedTreasure,
-      ],
-      overrides: {
-        gasLimit: 1e7,
-      },
-    }
-  );
+  const { data, isSuccess, writeAsync } = usePirateContract('diggChest', {
+    args: [
+      chest,
+      ethers.utils.parseEther(`${amount || 0}`).toString(),
+      signedTreasure,
+    ],
+    overrides: {
+      gasLimit: 1e7,
+    },
+  });
+
+  const {
+    data: txData,
+    status,
+    isError,
+    isLoading,
+  } = useWaitForTransaction({
+    hash: data?.hash,
+  });
 
   async function handleWithdraw() {
     if (!address) {
@@ -67,13 +79,14 @@ function Withdraw({ geoLocations, amount }) {
     try {
       const tx = await writeAsync?.();
       await tx?.wait();
-      runConfettiParty();
     } catch (error) {
       toast.error('User rejected a transaction or something went wrong');
     }
   }
+
   return (
     <button
+      disabled={isLoading}
       onClick={handleWithdraw}
       className="flex w-[150px] rounded-xl bg-yellow-700 py-3 px-4 align-middle font-bold  text-white"
     >
