@@ -1,6 +1,7 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 import usePirateContract from 'src/contracts/usePirateContract';
 import { bnum, noOp } from 'src/lib/helpers';
 import { useAccount, useBalance } from 'wagmi';
@@ -45,30 +46,30 @@ function Deposit({ geoLocations, amount, ...restProps }) {
     }
 
     if (geoLocations.length === 0) {
-      alert('No coords were added');
+      toast.error('No PINs were added');
       return;
     }
 
     if (!amount) {
-      alert('How much treasure you want to bury? Enter amount!');
+      toast.error('How much treasure you want to bury? Enter amount!');
       return;
     }
 
     if (bnum(balance.formatted).lt(amount)) {
-      alert('You are too poor');
+      toast.error('You are too poor');
       return;
     }
 
     if (chest === privateKey) {
       // SHOULD NEVER HAPPEN
-      alert('Something went wrong');
+      toast.error('Something went wrong');
       return;
     }
 
     try {
       const tx = await writeAsync?.();
       await tx?.wait();
-      console.log('DONE!', tx);
+      toast.success('Well done, pirate!');
     } catch (_) {
       //
     }
@@ -77,12 +78,12 @@ function Deposit({ geoLocations, amount, ...restProps }) {
   return (
     <button
       onClick={deposit}
-      className="flex rounded-xl bg-indigo-600 p-2 px-4 align-middle font-bold text-white"
+      className="flex rounded-xl bg-indigo-600 py-3 px-4 align-middle font-bold text-white"
       {...restProps}
     >
       <img
         src={`${router.basePath}/assets/icons/pirate.png`}
-        className={'mr-3 w-7'}
+        className={'mr-3 -mt-1 w-7'}
         alt=""
       />
       Bury a treasure

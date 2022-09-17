@@ -64,11 +64,11 @@ function Withdraw({ geoLocations, amount }) {
   return (
     <button
       onClick={handleWithdraw}
-      className="flex w-[150px] rounded-xl bg-red-600 p-2 px-4 align-middle font-bold  text-white"
+      className="flex w-[150px] rounded-xl bg-yellow-700 py-3 px-4 align-middle font-bold  text-white"
     >
       <img
         src={`${router.basePath}/assets/icons/shovel.svg`}
-        className={'mr-3 w-7'}
+        className={'-my-1 mr-3 w-7'}
         alt=""
       />
       Withdraw
