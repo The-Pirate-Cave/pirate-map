@@ -104,6 +104,12 @@ const Home: NextPage = () => {
                       placeholder={'Location'}
                     />
                     <button
+                      onClick={() => {
+                        setGeoLocations([
+                          ...geoLocations.slice(0, index),
+                          ...geoLocations.slice(index + 1, geoLocations.length),
+                        ]);
+                      }}
                       className={
                         'bg-gray border-1 h-[25px] w-[25px] rounded-xl bg-red-500 text-white'
                       }
