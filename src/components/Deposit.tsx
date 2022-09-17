@@ -76,15 +76,17 @@ function Deposit({ geoLocations, amount, ...restProps }) {
     <button
       disabled={isLoading}
       onClick={deposit}
-      className="flex whitespace-nowrap rounded-xl bg-indigo-600 py-3 px-4 align-middle font-bold text-white"
+      className={`flex whitespace-nowrap rounded-xl bg-indigo-600 py-3 px-4 align-middle font-bold text-white`}
       {...restProps}
     >
-      <img
-        src={`${router.basePath}/assets/icons/pirate.png`}
-        className={'mr-3 -mt-1 w-7'}
-        alt=""
-      />
-      Bury a treasure
+      <span>
+        <img
+          src={`${router.basePath}/assets/icons/pirate.png`}
+          className={'mr-3 -mt-1 w-7'}
+          alt=""
+        />
+      </span>
+      {isLoading ? 'Loading...' : 'Bury a treasure'}
     </button>
   );
 }

@@ -95,7 +95,7 @@ function Withdraw({ geoLocations, amount }) {
         className={'-my-1 mr-3 w-7'}
         alt=""
       />
-      Withdraw
+      {isLoading ? 'Loading...' : 'Withdraw'}
     </button>
   );
 }
