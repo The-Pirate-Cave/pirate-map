@@ -161,7 +161,7 @@ const Home: NextPage = () => {
                   <b>Amount (ETH):</b>
                   <div className={'mt-5'}>
                     <input
-                      className={'border-2 p-2'}
+                      className={'border-2 p-2 text-black'}
                       type="number"
                       onChange={(event) => {
                         setAmount(event.target.value);
