@@ -77,7 +77,7 @@ function Deposit({ geoLocations, amount, ...restProps }) {
   return (
     <button
       onClick={deposit}
-      className="flex rounded-xl border border-indigo-500 bg-indigo-600 p-2 px-4 align-middle font-bold text-white"
+      className="flex rounded-xl bg-indigo-600 p-2 px-4 align-middle font-bold text-white"
       {...restProps}
     >
       <img

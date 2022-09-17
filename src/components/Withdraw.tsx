@@ -1,5 +1,6 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
+import { useRouter } from 'next/router';
 import { generateChest, generatePrivateKey } from 'src/contracts/helpers';
 import usePirateContract from 'src/contracts/usePirateContract';
 import { noOp } from 'src/lib/helpers';
@@ -13,6 +14,7 @@ function Withdraw({ geoLocations, amount }) {
   const { data: balance } = useBalance({
     addressOrName: address,
   });
+  const router = useRouter();
   const signedTreasure = pirateSigner.signMessage(chest);
   const { openConnectModal = noOp } = useConnectModal();
   const { data, isLoading, isSuccess, writeAsync } = usePirateContract(
@@ -62,8 +64,13 @@ function Withdraw({ geoLocations, amount }) {
   return (
     <button
       onClick={handleWithdraw}
-      className="w-[150px] rounded-xl border bg-red-600 p-2 px-4 text-white"
+      className="flex w-[150px] rounded-xl bg-red-600 p-2 px-4 align-middle font-bold  text-white"
     >
+      <img
+        src={`${router.basePath}/assets/icons/shovel.svg`}
+        className={'mr-3 w-7'}
+        alt=""
+      />
       Withdraw
     </button>
   );
