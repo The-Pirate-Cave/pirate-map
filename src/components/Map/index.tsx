@@ -16,27 +16,15 @@ function useMap() {
       return new Promise((resolve) => {
         mapboxgl.accessToken =
           'pk.eyJ1IjoiZDNwb3J0aWxsbyIsImEiOiJja3ljam5qN24wcTBvMzBueGNtZ25mdXh0In0.KYOQ-CJFDcaEpyH-Ebe8iQ';
-        const map = new mapboxgl.Map({
+        const innerMap = new mapboxgl.Map({
           container: ref, // container ID
           style: 'mapbox://styles/mapbox/streets-v11', // style URL
           center: [longitude, latitude], // starting position [lng, lat]
           zoom: 15, // starting zoom
         });
-        setMap(map);
-        resolve(map);
+        setMap(innerMap);
+        resolve(innerMap);
       });
-    },
-    addMarker: () => {
-      if (!map) {
-        alert('Map is not initialized!');
-        return;
-      }
-
-      map.addControl(
-        new mapboxgl.AttributionControl({
-          customAttribution: 'Map design by me',
-        })
-      );
     },
   };
 }

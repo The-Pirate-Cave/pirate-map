@@ -114,7 +114,11 @@ const Home: NextPage = () => {
                       className={'mx-2'}
                       checked={watching}
                       onChange={() => {
-                        watching ? unwatch() : watch();
+                        if (watching) {
+                          unwatch();
+                        } else {
+                          watch();
+                        }
                       }}
                     />
                   </div>

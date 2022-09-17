@@ -25,8 +25,8 @@ export function generateChest(geoLocations) {
 
 export function generateChestUnhashed(geoLocations) {
   const joinedCoords = geoLocations
-      .map(({ longitude, latitude }) => [longitude, latitude].join(''))
-      .join('');
+    .map(({ longitude, latitude }) => [longitude, latitude].join(''))
+    .join('');
 
   return utils.toUtf8Bytes(joinedCoords);
 }
