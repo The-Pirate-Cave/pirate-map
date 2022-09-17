@@ -16,26 +16,19 @@ function Deposit({ geoLocations, amount, ...restProps }) {
   const router = useRouter();
   const privateKey = generatePrivateKey(geoLocations);
   const chest = generateChest(geoLocations);
-  console.log(chest, 'chest');
   const pirateSigner = new ethers.Wallet(privateKey);
-  console.log({ address: pirateSigner.address }, 'piratesigner');
   const { address } = useAccount();
   const { data: balance } = useBalance({
     addressOrName: address,
   });
-  const signature = pirateSigner.signMessage(chest);
-  console.log(signature, 'signature');
   const { openConnectModal = noOp } = useConnectModal();
-  const { data, isLoading, isSuccess, writeAsync } = usePirateContract(
-    'burryChest',
-    {
-      args: [chest, pirateSigner.address],
-      overrides: {
-        from: address,
-        value: ethers.utils.parseEther(`${amount || 0}`).toString(),
-      },
-    }
-  );
+  const { writeAsync } = usePirateContract('burryChest', {
+    args: [chest, pirateSigner.address],
+    overrides: {
+      from: address,
+      value: ethers.utils.parseEther(`${amount || 0}`).toString(),
+    },
+  });
 
   async function deposit() {
     console.log('amount: ', amount);
