@@ -1,38 +1,34 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { ethers, utils } from 'ethers';
+import { ethers } from 'ethers';
+import usePirateContract from 'src/contracts/usePirateContract';
 import { bnum, noOp } from 'src/lib/helpers';
-import {
-  useAccount,
-  useBalance,
-  useContractWrite,
-  usePrepareContractWrite,
-} from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 
 import { generateChest, generatePrivateKey } from '../contracts/helpers';
-import pirateABI from '../contracts/PirateContract/abi.json';
-import { ADDRESS } from '../contracts/PirateContract/pirate-contract';
 
 function Deposit({ geoLocations, amount, ...restProps }) {
   const privateKey = generatePrivateKey(geoLocations);
   const chest = generateChest(geoLocations);
+  console.log(chest, 'chest');
   const pirateSigner = new ethers.Wallet(privateKey);
+  console.log({ address: pirateSigner.address }, 'piratesigner');
   const { address } = useAccount();
   const { data: balance } = useBalance({
     addressOrName: address,
   });
+  const signature = pirateSigner.signMessage(chest);
+  console.log(signature, 'signature');
   const { openConnectModal = noOp } = useConnectModal();
-  const { config } = usePrepareContractWrite({
-    addressOrName: ADDRESS,
-    contractInterface: pirateABI,
-    functionName: 'burryChest',
-    args: [chest, pirateSigner.address],
-    overrides: {
-      from: address,
-      value: ethers.utils.parseEther(`${amount || 0}`).toString(),
-    },
-  });
-
-  const { data, isLoading, isSuccess, writeAsync } = useContractWrite(config);
+  const { data, isLoading, isSuccess, writeAsync } = usePirateContract(
+    'burryChest',
+    {
+      args: [chest, pirateSigner.address],
+      overrides: {
+        from: address,
+        value: ethers.utils.parseEther(`${amount || 0}`).toString(),
+      },
+    }
+  );
 
   async function deposit() {
     console.log('amount: ', amount);
@@ -67,9 +63,13 @@ function Deposit({ geoLocations, amount, ...restProps }) {
       return;
     }
 
-    const tx = await writeAsync?.();
-    await tx.wait();
-    console.log('DONE!', tx);
+    try {
+      const tx = await writeAsync?.();
+      await tx?.wait();
+      console.log('DONE!', tx);
+    } catch (_) {
+      //
+    }
   }
 
   return (
