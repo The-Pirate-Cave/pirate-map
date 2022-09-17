@@ -130,7 +130,7 @@ const Home: NextPage = () => {
                 ))}
               </div>
               <div className="mb-5">
-                <Deposit />
+                <Deposit geoLocations={geoLocations} />
               </div>
             </article>
           </article>
