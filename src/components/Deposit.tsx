@@ -1,36 +1,55 @@
+import { ethers, utils } from 'ethers';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  useAccount
+} from 'wagmi';
 import { noOp } from 'src/lib/helpers';
-import { useAccount } from 'wagmi';
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
-
-import { generateHashLocation } from '../contracts/helpers';
+import { generateChest, generatePrivateKey } from '../contracts/helpers';
 import pirateABI from '../contracts/PirateContract/abi.json';
 import { ADDRESS } from '../contracts/PirateContract/pirate-contract';
 
-function Deposit({ geoLocations }) {
+function Deposit({ geoLocations, ...restProps }) {
+  const privateKey = generatePrivateKey(geoLocations);
+  const chest = generateChest(geoLocations);
+  const pirateSigner = new ethers.Wallet(privateKey);
+  const { address } = useAccount();
+  const { openConnectModal = noOp } = useConnectModal();
+
   const { config } = usePrepareContractWrite({
     addressOrName: ADDRESS,
     contractInterface: pirateABI,
     functionName: 'burryChest',
+    args: [chest, pirateSigner.address],
   });
-  const { address } = useAccount();
-  const { openConnectModal = noOp } = useConnectModal();
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
-  const hashLocation = generateHashLocation(geoLocations);
 
-  function handleDeposit() {
+  async function deposit() {
+    console.log('geoLocations', geoLocations);
+    console.log('result hash: ', privateKey);
+    console.log('pirateSigner', pirateSigner);
+
     if (!address) {
       openConnectModal();
-    } else {
-      // noop
+      return;
     }
-    console.log(geoLocations);
+
+    if (chest === privateKey) {
+      // SHOULD NEVER HAPPEN
+      alert('Something went wrong');
+      return;
+    }
+
+    write?.();
   }
 
   return (
     <button
-      onClick={handleDeposit}
+      disabled={!write}
+      onClick={deposit}
       className="w-[150px] rounded-xl border bg-indigo-600 p-2 px-4 text-white"
+      {...restProps}
     >
       Deposit
     </button>

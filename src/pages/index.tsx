@@ -12,7 +12,6 @@ import Withdraw from '@/components/Withdraw';
 import useMap from '../components/Map';
 
 const Home: NextPage = () => {
-  const geo = useGeo();
   const { position, watching, watch, unwatch } =
     useGeoWatch(/* immediate flag (boolean) or PositionOptions object */);
   const { createMap } = useMap();
@@ -29,8 +28,6 @@ const Home: NextPage = () => {
         const marker1 = new mapboxgl.Marker()
           .setLngLat([longitude, latitude])
           .addTo(map);
-
-        console.log('marker1', marker1);
 
         map.addControl(
           new mapboxgl.AttributionControl({
@@ -83,6 +80,7 @@ const Home: NextPage = () => {
                   </div>
                   <div>
                     <button
+                      disabled={!position}
                       className={'rounded-xl bg-black p-2 px-4 text-white'}
                       onClick={() => {
                         setGeoLocations([
@@ -99,6 +97,7 @@ const Home: NextPage = () => {
                 {geoLocations.map((geoLocation, index) => (
                   <div key={index} className={'my-1'}>
                     <input
+                      onChange={() => {}}
                       className={
                         'mr-4 w-[240px] rounded-xl border-2 border-gray-400 bg-gray-100 p-2'
                       }
@@ -130,7 +129,10 @@ const Home: NextPage = () => {
                 ))}
               </div>
               <div className="mb-5">
-                <Deposit geoLocations={geoLocations} />
+                <Deposit
+                  disabled={geoLocations.length === 0}
+                  geoLocations={geoLocations}
+                />
               </div>
             </article>
           </article>
