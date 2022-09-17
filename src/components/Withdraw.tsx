@@ -11,21 +11,13 @@ import {
 } from 'src/contracts/helpers';
 import usePirateContract from 'src/contracts/usePirateContract';
 import { noOp } from 'src/lib/helpers';
-import {
-  useAccount,
-  useBalance,
-  useSignMessage,
-  useWaitForTransaction,
-} from 'wagmi';
+import { useAccount, useWaitForTransaction } from 'wagmi';
 
 function Withdraw({ geoLocations, amount }) {
   const privateKey = generatePrivateKey(geoLocations);
   const chest = generateChest(geoLocations);
   const pirateSigner = new ethers.Wallet(privateKey);
   const { address } = useAccount();
-  const { data: balance } = useBalance({
-    addressOrName: address,
-  });
   const router = useRouter();
   const messageHashBytes = generateChestUnhashed(geoLocations);
   const signedTreasure = pirateSigner.signMessage(messageHashBytes);
@@ -34,7 +26,7 @@ function Withdraw({ geoLocations, amount }) {
   });
 
   const { openConnectModal = noOp } = useConnectModal();
-  const { data, isSuccess, writeAsync } = usePirateContract('diggChest', {
+  const { data, writeAsync } = usePirateContract('diggChest', {
     args: [
       chest,
       ethers.utils.parseEther(`${amount || 0}`).toString(),
