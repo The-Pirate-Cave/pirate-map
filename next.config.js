@@ -1,16 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  eslint: {
-    dirs: ['.'],
-  },
-  reactStrictMode: true,
-  typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
-  },
-};
+/** @type { import('next').NextConfig } */
 
-module.exports = nextConfig;
+const nextConfig = {
+  reactStrictMode: true,
+}
+
+module.exports = nextConfig
