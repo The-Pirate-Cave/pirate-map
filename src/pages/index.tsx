@@ -1,43 +1,45 @@
-// or "const mapboxgl = require('mapbox-gl');"
-import { ConnectButton } from "@rainbow-me/rainbowkit"
-import mapboxgl from "mapbox-gl"
-import type { NextPage } from "next"
-import Head from "next/head"
-import { useEffect, useRef, useState } from "react"
-import { useGeo, useGeoWatch } from "use-geo"
-import Withdraw from "@/components/Withdraw"
-import Deposit from "@/components/Deposit"
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import mapboxgl from 'mapbox-gl';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import { useGeo, useGeoWatch } from 'use-geo';
 
-import useMap from "../components/Map"
+import Deposit from '@/components/Deposit';
+import Withdraw from '@/components/Withdraw';
+
+import useMap from '../components/Map';
 
 const Home: NextPage = () => {
-  const geo = useGeo()
+  const geo = useGeo();
   const { position, watching, watch, unwatch } =
-    useGeoWatch(/* immediate flag (boolean) or PositionOptions object */)
-  const { createMap } = useMap()
-  const ref = useRef(null)
-  const [geoLocations, setGeoLocations] = useState([])
-  const { longitude, latitude } = position?.coords || {}
-  console.log({ geo, position, longitude, watching })
+    useGeoWatch(/* immediate flag (boolean) or PositionOptions object */);
+  const { createMap } = useMap();
+  const ref = useRef(null);
+  const [geoLocations, setGeoLocations] = useState([]);
+  const { longitude, latitude } = position?.coords || {};
+  const router = useRouter();
+
   useEffect(() => {
     if (ref.current && position) {
       createMap(ref.current, { longitude, latitude }).then((map: any) => {
-        map.addControl(new mapboxgl.NavigationControl())
+        map.addControl(new mapboxgl.NavigationControl());
 
         const marker1 = new mapboxgl.Marker()
           .setLngLat([longitude, latitude])
-          .addTo(map)
+          .addTo(map);
 
         console.log('marker1', marker1);
 
         map.addControl(
           new mapboxgl.AttributionControl({
-            customAttribution: "Map design by me",
+            customAttribution: 'Map design by me',
           })
-        )
-      })
+        );
+      });
     }
-  }, [ref, position])
+  }, [ref, position]);
 
   return (
     <>
@@ -113,8 +115,16 @@ const Home: NextPage = () => {
                           ...geoLocations.slice(index + 1, geoLocations.length),
                         ]);
                       }}
-                      className="bg-gray border-1 h-[25px] w-[25px] rounded-xl bg-gray-500 text-white">
-                      -
+                      className={
+                        'bg-gray inline-flex justify-items-center rounded-xl border-2 bg-red-500 py-2 px-3 align-middle text-white'
+                      }
+                    >
+                      Remove
+                      <img
+                        src={`${router.basePath}/assets/icons/remove.webp`}
+                        alt=""
+                        className="ml-3 w-5"
+                      />
                     </button>
                   </div>
                 ))}
@@ -133,7 +143,7 @@ const Home: NextPage = () => {
       {/*  </a> */}
       {/* </footer> */}
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
