@@ -146,6 +146,9 @@ const Home: NextPage = () => {
               <div className="mb-5">
                 <Deposit amount={amount} geoLocations={geoLocations} />
               </div>
+              <div className="mb-5">
+                <Withdraw amount={amount} geoLocations={geoLocations} />
+              </div>
             </article>
           </article>
         </div>
