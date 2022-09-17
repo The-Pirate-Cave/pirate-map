@@ -191,8 +191,8 @@ const Home: NextPage = () => {
                   </div>
                 </label>
               </div>
-              <article className="flex">
-                <div className="mb-5 mr-5">
+              <article className="mt-16 flex">
+                <div className="mb-5 mr-2">
                   <Deposit amount={amount} geoLocations={geoLocations} />
                 </div>
                 <div className="mb-5">

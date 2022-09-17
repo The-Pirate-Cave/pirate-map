@@ -82,7 +82,7 @@ function Deposit({ geoLocations, amount, ...restProps }) {
   return (
     <button
       onClick={deposit}
-      className="flex rounded-xl bg-indigo-600 py-3 px-4 align-middle font-bold text-white"
+      className="flex whitespace-nowrap rounded-xl bg-indigo-600 py-3 px-4 align-middle font-bold text-white"
       {...restProps}
     >
       <img
