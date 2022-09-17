@@ -12,6 +12,7 @@ import Deposit from '@/components/Deposit';
 import Withdraw from '@/components/Withdraw';
 
 import useMap from '../components/Map';
+import { bnum } from '../lib/helpers';
 
 const Home: NextPage = () => {
   const { position, watching, watch, unwatch } =
@@ -114,7 +115,10 @@ const Home: NextPage = () => {
                       onClick={() => {
                         setGeoLocations([
                           ...geoLocations,
-                          { longitude, latitude },
+                          {
+                            longitude: bnum(longitude).toFixed(3),
+                            latitude: bnum(latitude).toFixed(3),
+                          },
                         ]);
                       }}
                     >
@@ -128,6 +132,8 @@ const Home: NextPage = () => {
                   </div>
                   <hr className={`my-5 border-gray-600`} />
                 </>
+                <h3 className={'text-xl font-bold'}>Pins</h3>
+                {geoLocations.length === 0 && <p>No PINs were saved</p>}
                 {geoLocations.map((geoLocation, index) => (
                   <div key={index} className={'my-1 flex align-middle'}>
                     <svg
@@ -143,7 +149,7 @@ const Home: NextPage = () => {
                       disabled={true}
                       onChange={() => {}}
                       className={
-                        'w-[220px] rounded-xl border-2 border-gray-200 p-2 text-black disabled:bg-gray-300'
+                        'w-[200px] rounded-xl border-2 border-gray-200 p-2 text-black disabled:bg-gray-300'
                       }
                       type="text"
                       value={[geoLocation.latitude, geoLocation.longitude].join(
@@ -159,14 +165,13 @@ const Home: NextPage = () => {
                         ]);
                       }}
                       className={
-                        'bg-gray mx-2 flex rounded-xl bg-red-600 py-2 px-3 align-middle text-white'
+                        'bg-gray mx-2 flex rounded-md bg-red-600 px-3 align-middle text-white'
                       }
                     >
-                      Remove
                       <img
-                        src={`${router.basePath}/assets/icons/remove.webp`}
+                        src={`${router.basePath}/assets/icons/remove.svg`}
                         alt=""
-                        className="ml-3 mt-1 w-5"
+                        className="mt-3.5 -mb-1 w-5"
                       />
                     </button>
                   </div>
