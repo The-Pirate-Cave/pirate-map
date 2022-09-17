@@ -6,7 +6,11 @@ import usePirateContract from 'src/contracts/usePirateContract';
 import { bnum, noOp } from 'src/lib/helpers';
 import { useAccount, useBalance } from 'wagmi';
 
-import { generateChest, generatePrivateKey } from '../contracts/helpers';
+import {
+  generateChest,
+  generatePrivateKey,
+  runConfettiParty,
+} from '../contracts/helpers';
 
 function Deposit({ geoLocations, amount, ...restProps }) {
   const router = useRouter();
@@ -69,7 +73,7 @@ function Deposit({ geoLocations, amount, ...restProps }) {
     try {
       const tx = await writeAsync?.();
       await tx?.wait();
-      toast.success('Well done, pirate!');
+      runConfettiParty();
     } catch (error) {
       toast.error('User rejected a transaction or something went wrong');
     }
