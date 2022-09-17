@@ -2,7 +2,6 @@
 
 const nextConfig = {
   reactStrictMode: false,
-  distDir: 'build',
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
