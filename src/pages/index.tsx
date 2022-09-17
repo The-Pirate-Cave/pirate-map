@@ -77,18 +77,22 @@ const Home: NextPage = () => {
           <div className="">
             <ConnectButton />
           </div>
-          <div className="mt-5">
-            <img
-              className={'mx-auto w-3/12 md:mx-14'}
-              src={`${router.basePath}/assets/icons/logotype.svg`}
-              alt=""
-            />
+          <div className="mt-5 grid place-items-center">
+            <div className={'mx-auto block w-3/12 md:mx-10'}>
+              <img
+                src={`${router.basePath}/assets/icons/logotype.svg`}
+                alt=""
+              />
+            </div>
+            <h2 className={'mx-3 text-2xl md:text-3xl'}>
+              Hide your crypto assets in a secret location
+            </h2>
+            <hr className={`my-5 w-full border-gray-600`} />
           </div>
-          <article className="mb-20 flex">
+          <article className="mb-20">
             <article className="">
               <div className="mb-6">
-                <>
-                  <hr className={`my-5 border-gray-600`} />
+                <article className={'mb-5'}>
                   <div className="mb-2 flex align-middle">
                     <h4 className={'inline font-bold'}>Live Watching: </h4>
                     <Switch
@@ -117,7 +121,7 @@ const Home: NextPage = () => {
                     <button
                       disabled={!position}
                       className={
-                        'flex rounded-xl border-2 border-indigo-500 bg-indigo-600 p-2 px-4 align-middle text-white'
+                        'flex rounded-xl border-2 border-indigo-500 bg-indigo-600 p-2 px-4 align-middle capitalize text-white'
                       }
                       onClick={() => {
                         setGeoLocations([
@@ -134,11 +138,10 @@ const Home: NextPage = () => {
                         className={'mr-3 inline w-6'}
                         alt=""
                       />
-                      PIN A LOCATION
+                      PIN your location
                     </button>
                   </div>
-                  <hr className={`my-5 border-gray-600`} />
-                </>
+                </article>
                 <h3 className={'text-xl font-bold'}>Pins</h3>
                 {geoLocations.length === 0 && <p>No PINs were saved</p>}
                 {geoLocations.map((geoLocation, index) => (
@@ -185,6 +188,7 @@ const Home: NextPage = () => {
                 ))}
               </div>
               <div className="mb-5">
+                <hr className={`my-5 border-gray-600`} />
                 <label>
                   <b>Amount (ETH):</b>
                   <div className={'mt-5'}>
