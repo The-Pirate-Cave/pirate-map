@@ -28,6 +28,8 @@ const Home: NextPage = () => {
           .setLngLat([longitude, latitude])
           .addTo(map)
 
+        console.log('marker1', marker1);
+
         map.addControl(
           new mapboxgl.AttributionControl({
             customAttribution: "Map design by me",
@@ -61,46 +63,64 @@ const Home: NextPage = () => {
           <article className="mb-20 flex">
             <article className="">
               <div className="mb-5">
-                {geoLocations.length === 0 && (
-                  <>
-                    <span>Watching: </span>
+                <>
+                  <span>Live Watching: </span>
+                  <button
+                    onClick={watching ? unwatch : watch}
+                    className={'border-1 mx-2 rounded-xl bg-gray-300 p-2 px-4'}
+                  >
+                    {watching ? 'stop' : 'start'}
+                  </button>
+                  <div className={'mb-5'}>
+                    <span>
+                      <b>latitude:</b> {latitude}
+                    </span>{' '}
+                    <span>
+                      <b>longitude:</b> {longitude}
+                    </span>
+                  </div>
+                  <div>
                     <button
-                      onClick={watching ? unwatch : watch}
-                      className={"border-1 rounded-xl bg-gray-300 p-2"}
+                      className={'rounded-xl bg-black p-2 px-4 text-white'}
+                      onClick={() => {
+                        setGeoLocations([
+                          ...geoLocations,
+                          { longitude, latitude },
+                        ]);
+                      }}
                     >
-                      {watching ? "stop" : "start"}
+                      + Save coords for deposit
                     </button>
-                    <div>
-                      <span>latitude: {latitude}</span>{" "}
-                      <span>longitude: {longitude}</span>
-                    </div>
-                  </>
-                )}
+                  </div>
+                  <hr className={`my-5`} />
+                </>
                 {geoLocations.map((geoLocation, index) => (
-                  <div key={index}>
+                  <div key={index} className={'my-1'}>
                     <input
                       className={
-                        "border-1 mr-4 rounded-xl border-indigo-600 bg-gray-100 p-2"
+                        'mr-4 w-[240px] rounded-xl border-2 border-gray-400 bg-gray-100 p-2'
                       }
                       type="text"
-                      value={geoLocation}
-                      placeholder={"Location"}
+                      value={[geoLocation.latitude, geoLocation.longitude].join(
+                        ', '
+                      )}
+                      placeholder={'Location'}
                     />
                     <button
-                      className={
-                        "bg-gray border-1 h-[25px] w-[25px] rounded-xl bg-gray-500 text-white"
-                      }
-                    >
-                      +
+                      onClick={() => {
+                        setGeoLocations([
+                          ...geoLocations.slice(0, index),
+                          ...geoLocations.slice(index + 1, geoLocations.length),
+                        ]);
+                      }}
+                      className="bg-gray border-1 h-[25px] w-[25px] rounded-xl bg-gray-500 text-white">
+                      -
                     </button>
                   </div>
                 ))}
               </div>
               <div className="mb-5">
                 <Deposit />
-              </div>
-              <div className="mb-5">
-                <Withdraw />
               </div>
             </article>
           </article>
