@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "DISABLE_ESLINT_PLUGIN=true next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next export"
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^0.6.0",
